@@ -37,6 +37,8 @@ public class Vivarium
   
   public static bfish mybfish;
   
+  //ball list x, y and z
+  interval myInterval = new interval();
   
   public static food myfood;
   
@@ -50,7 +52,25 @@ public class Vivarium
 		float mypos = rn.nextFloat()*2 +-1;
 		myfish= new Fish(mypos, mypos, mypos);
 	    creaturelist.add(myfish);
-		
+	    
+	    interval intvx = new interval();
+	    intvx.startPoint = mypos  ;
+	    intvx.endPoint = mypos;
+	    //
+	    
+	    ballListX.add(intvx);
+	    
+	    interval intvy = new interval();
+	    intvy.startPoint = mypos  ;
+	    intvy.endPoint = mypos;
+	    
+	    ballListY.add(intvy);
+	    
+	    interval intvz = new interval();
+	    intvz.startPoint = mypos  ;
+	    intvz.endPoint = mypos;
+	    
+	    ballListZ.add(intvz);
 	}
 	
 	//blue fish
@@ -142,8 +162,10 @@ public class Vivarium
 			//myfish.alive=false; //if there is a collision the red fish that collided is now dead
 		
 	//}	
-	
   	//check for collisions among redfish
+	//O(n2) - > O(n + m)
+	//closet pair of balls
+	/*
 	for (int i= 0; i<creaturelist.size()-1; i++)
 	{	
 		for (int j=i+1; j<creaturelist.size(); j++)
@@ -161,6 +183,10 @@ public class Vivarium
 		}			
 		
 	}
+	*/
+	if(myInterval.)
+	//init
+	//
 	//update the tank
     tank.update( gl );
 

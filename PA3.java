@@ -42,8 +42,8 @@ import com.jogamp.opengl.util.*;
 public class PA3 extends JFrame
   implements GLEventListener, KeyListener, MouseListener, MouseMotionListener
 {
-  private final int DEFAULT_WINDOW_WIDTH =512;
-  private final int DEFAULT_WINDOW_HEIGHT=512;
+  private final int DEFAULT_WINDOW_WIDTH =1024;
+  private final int DEFAULT_WINDOW_HEIGHT=1024;
 
   private GLCapabilities capabilities;
   private GLCanvas canvas;
@@ -71,7 +71,7 @@ public class PA3 extends JFrame
     canvas.setAutoSwapBufferMode(true); // true by default. Just to be explicit
     getContentPane().add(canvas);
 
-    animator = new FPSAnimator(canvas, 60); // drive the display loop @ 60 FPS
+    animator = new FPSAnimator(canvas, 1); // drive the display loop @ 60 FPS
 
     glu  = new GLU();
     glut = new GLUT();
@@ -89,6 +89,9 @@ public class PA3 extends JFrame
     // correctly initialized.
     vivarium = new Vivarium(  );
     viewing_quaternion = new Quaternion();
+    
+    //init Interval Array
+    initIntervalList();
   }
 
   public void run()
@@ -98,6 +101,7 @@ public class PA3 extends JFrame
 
   public static void main( String[] args )
   {
+	  //create the balls
     PA3 P = new PA3();
     P.run();
   }
