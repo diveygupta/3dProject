@@ -13,6 +13,7 @@
 
 
 import javax.media.opengl.*;
+import com.jogamp.opengl.util.*;
 import java.util.*;
 
 public class SolidCylinder

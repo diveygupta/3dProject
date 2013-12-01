@@ -26,6 +26,7 @@
 //The blue fish will chase nearby redfish until he catches them at which point the red fish are eaten and die
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*; 
 
 import com.jogamp.opengl.util.gl2.GLUT;//for new version of gl
@@ -90,10 +91,6 @@ public class PA3 extends JFrame
     viewing_quaternion = new Quaternion();
     
     //init Interval Array
-<<<<<<< HEAD
-=======
-    //initIntervalList();
->>>>>>> 358418682edfa712e8009e965890bc8b929c2329
   }
 
   public void run()
@@ -268,6 +265,16 @@ public class PA3 extends JFrame
       last_x = mouse.getX();
       last_y = mouse.getY();
       rotate_world = true;
+    }
+    //add food
+    if (button==MouseEvent.BUTTON3)
+    {
+    	int myX= mouse.getX();
+    	int myY= mouse.getY();
+    	addfood=true;
+    	//vivarium.foodlist.add( new food(myX, myY) );
+    	
+    	
     }
   }
 

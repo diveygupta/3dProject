@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 
 public class ArrayOfInterval {
@@ -6,83 +8,48 @@ public class ArrayOfInterval {
 	  public ArrayList<interval> ballListY = new ArrayList<interval>();
 	  public ArrayList<interval> ballListZ = new ArrayList<interval>();
 	  
+	  public float[] startPointsX;
+	  public float[] startPointsY;
+	  public float[] startPointsZ;
+	  
 	  public void sortIntervalArray(){
-<<<<<<< HEAD
 		  insertionSort(ballListX);
 		  insertionSort(ballListY);
 		  insertionSort(ballListZ);
-=======
-		  insertionSort();
->>>>>>> 358418682edfa712e8009e965890bc8b929c2329
 	  }
 
-	  public ArrayList<int[]> checkCollision2(){
+	  public ArrayList<int[]> sweepAndPrune(ArrayList<Fish> creatureList){
 		  sortIntervalArray();
-		  return checkOverlap();
+		  return checkOverlap(creatureList);
 	  }
-	 /* 
-	  public boolean checkEach(char axis){
-		  boolean ret = false;
-		  switch(axis){
-		  	case 'X':{
-		  		checkOverlap(ballListX);
-		  		break;
-		  	}
-		  	case 'Y':{
-		  		checkOverlap(ballListY);
-		  		break;
-		  	}
-		  	case 'Z':{
-		  		checkOverlap(ballListZ);
-		  		break;
-		  	}
-		  	default:{
-		  		System.out.println("error occurs in checkEach funcion in file ArrayOfInterval.java");
-		  	}
-		  }
-		  return ret;
-	  }
+
 	  
-	public void checkOverlap(ArrayList<interval> list)
-	{
-		ArrayList<int[]> overlapList = new ArrayList<>();
-		for(int i=0;i<list.size();i++)
-		{
-			for(int j=i;j<list.size();j++)
-			{
-				if(list.get(i).endPoint>list.get(j).startPoint)
-				{
-					int[] a = new int[2];
-					a[0]=i;
-					a[1]=j;
-					overlapList.add(a);
-				}
-				else
-					break;
-			}
-		}
-		
-	}
-<<<<<<< HEAD
-	*/
-=======
-	
->>>>>>> 358418682edfa712e8009e965890bc8b929c2329
-	public ArrayList<int[]> checkOverlap()
+	public ArrayList<int[]> checkOverlap(ArrayList<Fish> creatureList)
 	{	// O(n^2) in worst case
 		ArrayList<int[]> overlapList = new ArrayList<>();
 		for(int i=0;i<ballListX.size();i++)
 		{
 			for(int j=i+1;j<ballListX.size();j++)
 			{
-				if(ballListX.get(i).endPoint>ballListX.get(j).startPoint &&
-				   ballListY.get(i).endPoint>ballListY.get(j).startPoint &&
-				   ballListZ.get(i).endPoint>ballListZ.get(j).startPoint)
+				if(ballListX.get(i).endPoint>ballListX.get(j).startPoint)
 				{
-					int[] a = new int[2];
-					a[0]=ballListX.get(i).id;
-					a[1]=ballListX.get(j).id;
-					overlapList.add(a);
+					int id1 = ballListX.get(i).id;
+					int id2 = ballListX.get(j).id;
+					float d = Math.abs(ballListX.get(i).startPoint-ballListX.get(i).endPoint);
+					Fish fish1 = creatureList.get(id1);
+					Fish fish2 = creatureList.get(id2);
+
+					
+					if(isOverlap(fish1.y, fish2.y, fish1.radius) || isOverlap(fish2.y, fish1.y, fish1.radius))
+					{
+						if(isOverlap(fish1.z, fish2.z, fish1.radius) || isOverlap(fish2.z, fish1.z, fish1.radius))
+						{
+							int[] a = new int[2];
+							a[0]=id1;
+							a[1]=id2;
+							overlapList.add(a);
+						}
+					}
 				}
 				else
 					break;
@@ -90,67 +57,34 @@ public class ArrayOfInterval {
 		}
 		return overlapList;
 	}
-<<<<<<< HEAD
-	/*
-=======
-	
->>>>>>> 358418682edfa712e8009e965890bc8b929c2329
-	public void insertionSort()
-	{	// O(n) in general cases
+
+	public void insertionSort(ArrayList<interval> list)
+	{
 		int i, j;
-		float midPoint, startPointX, endPointX, startPointY, endPointY, startPointZ, endPointZ;
-		int idX, idY, idZ;
-		for (i = 1; i < ballListX.size(); i++)
+		float midPoint, startPoint, endPoint;
+		int id;
+		for (i = 1; i < list.size(); i++)
 		{
-    	  	midPoint = (ballListX.get(i).startPoint + ballListX.get(i).endPoint)/2;
-    	  	startPointX = ballListX.get(i).startPoint;
-    	  	endPointX = ballListX.get(i).endPoint;
-    	  	idX =  ballListX.get(i).id;
-    	  	startPointY = ballListY.get(i).startPoint;
-    	  	endPointY = ballListY.get(i).endPoint;
-    	  	idY =  ballListY.get(i).id;
-    	  	startPointZ = ballListZ.get(i).startPoint;
-    	  	endPointZ = ballListZ.get(i).endPoint;
-    	  	idZ =  ballListZ.get(i).id;
+    	  	midPoint = (list.get(i).startPoint + list.get(i).endPoint)/2;
+    	  	startPoint = list.get(i).startPoint;
+    	  	endPoint = list.get(i).endPoint;
+    	  	id =  list.get(i).id;
 			j = i;
-			while (j > 0 && (ballListX.get(j-1).startPoint + ballListX.get(j-1).endPoint)/2 > midPoint)
+			while (j > 0 && (list.get(j - 1).startPoint + list.get(j - 1).endPoint) / 2 > midPoint)
 			{
-				ballListX.get(j).startPoint = ballListX.get(j-1).startPoint;
-				ballListX.get(j).endPoint = ballListX.get(j-1).endPoint;
-				ballListX.get(j).id = ballListX.get(j-1).id;
-				ballListY.get(j).startPoint = ballListY.get(j-1).startPoint;
-				ballListY.get(j).endPoint = ballListY.get(j-1).endPoint;
-				ballListY.get(j).id = ballListY.get(j-1).id;
-				ballListZ.get(j).startPoint = ballListZ.get(j-1).startPoint;
-				ballListZ.get(j).endPoint = ballListZ.get(j-1).endPoint;
-				ballListZ.get(j).id = ballListZ.get(j-1).id;
+				list.get(j).startPoint = list.get(j-1).startPoint;
+				list.get(j).endPoint = list.get(j-1).endPoint;
+				list.get(j).id = list.get(j-1).id;
 				j--;
 			}
-			ballListX.get(j).startPoint = startPointX;
-			ballListX.get(j).endPoint = endPointX;
-			ballListX.get(j).id = idX;
-			ballListY.get(j).startPoint = startPointY;
-			ballListY.get(j).endPoint = endPointY;
-			ballListY.get(j).id = idY;
-			ballListZ.get(j).startPoint = startPointZ;
-			ballListZ.get(j).endPoint = endPointZ;
-			ballListZ.get(j).id = idZ;
+			list.get(j).startPoint = startPoint;
+			list.get(j).endPoint = endPoint;
+			list.get(j).id = id;
 	    }
-<<<<<<< HEAD
 	}
-	*/
-	/*
-	 * !!!!!!!!!!!!!!implement this function using insertion sort
-	 */
-	public void insertionSort(ArrayList<interval> myBallList){
-		//sort them using midpoint:
-		
-=======
-		/*for (i = 0; i < ballListX.size(); i++)
-		{
-			System.out.printf("%f\n", (ballListX.get(i).startPoint+ballListX.get(i).endPoint)/2);
-		}*/
->>>>>>> 358418682edfa712e8009e965890bc8b929c2329
+	
+	public boolean isOverlap(float a, float b,float radius){
+		if(a + radius > b - radius && Math.abs(a - b)  <= 2 * radius) return true;
+		else return false;
 	}
 }
-
