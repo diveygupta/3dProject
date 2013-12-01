@@ -46,11 +46,11 @@ public class Vivarium
   public Vivarium()
   {
 	  int num = 300;
-	/*
+	
 	 array.startPointsX = new float[num];
 	 array.startPointsY = new float[num];
 	 array.startPointsZ = new float[num];
-	 */
+	 
 	  //red fish
 	 for (int i=0; i< num ;i++)
 	 {
@@ -64,7 +64,7 @@ public class Vivarium
 		intvx.endPoint = mypos+myfish.radius;
 		intvx.id = i;
     	array.ballListX.add(intvx);
-    	/*
+    
     	interval intvy = new interval();
     	intvx.startPoint = mypos-myfish.radius;
     	intvx.endPoint = mypos+myfish.radius;
@@ -76,7 +76,6 @@ public class Vivarium
     	intvx.endPoint = mypos+myfish.radius;
     	intvz.id = i;
     	array.ballListZ.add(intvz);
-    	*/
 	}
 	
 	//blue fish
@@ -119,8 +118,8 @@ public class Vivarium
 	
 	//update X, Y, Z seperately
     updateBallList(array.ballListX, 'X');
-    //updateBallList(array.ballListY, 'Y');
-    //updateBallList(array.ballListZ, 'Z');
+    updateBallList(array.ballListY, 'Y');
+    updateBallList(array.ballListZ, 'Z');
 	//update the blue fish
 	//mybfish.update(gl);
 		
@@ -246,19 +245,19 @@ public class Vivarium
 		  	case('X'):{
 		  		tempInterval.startPoint = tempFish.x - tempFish.radius;
 		  		tempInterval.endPoint = tempFish.x + tempFish.radius;
-		  		//array.startPointsX[id]=tempFish.x - tempFish.radius;
+		  		array.startPointsX[id]=tempFish.x - tempFish.radius;
 		  		break;
 		  	}
 		  	case('Y'):{
 		  		tempInterval.startPoint = tempFish.y - tempFish.radius;
 		  		tempInterval.endPoint = tempFish.y + tempFish.radius;
-		  		//array.startPointsY[id]=tempFish.y - tempFish.radius;
+		  		array.startPointsY[id]=tempFish.y - tempFish.radius;
 		  		break;
 		  	}
 		  	case('Z'):{
 		  		tempInterval.startPoint = tempFish.z - tempFish.radius;
 		  		tempInterval.endPoint = tempFish.z + tempFish.radius;
-		  		//array.startPointsZ[id]=tempFish.z - tempFish.radius;
+		  		array.startPointsZ[id]=tempFish.z - tempFish.radius;
 		  		break;
 		  	}
 		  	default:{

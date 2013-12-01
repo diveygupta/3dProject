@@ -8,16 +8,14 @@ public class ArrayOfInterval {
 	  public ArrayList<interval> ballListY = new ArrayList<interval>();
 	  public ArrayList<interval> ballListZ = new ArrayList<interval>();
 	  
-	  /*
 	  public float[] startPointsX;
 	  public float[] startPointsY;
 	  public float[] startPointsZ;
-	  */
 	  
 	  public void sortIntervalArray(){
 		  insertionSort(ballListX);
-		  //insertionSort(ballListY);
-		  //insertionSort(ballListZ);
+		  insertionSort(ballListY);
+		  insertionSort(ballListZ);
 	  }
 
 	  public ArrayList<int[]> sweepAndPrune(ArrayList<Fish> creatureList){
