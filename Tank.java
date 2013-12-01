@@ -7,15 +7,12 @@
 
 import java.nio.*; // for the byteBuffer
 import javax.media.opengl.*;
-
-import com.jogamp.common.nio.Buffers;
-import com.jogamp.opengl.util.*;
-import java.util.*;
+import com.jogamp.common.nio.Buffers;;
 
 public class Tank
 {
   private final int CHECK_IMAGE_WIDTH  = 64;
-  private final int CHECK_IMAGE_HEIGHT = 64; 
+  private final int CHECK_IMAGE_HEIGHT = 64;
   private int texture;
   
   private float w, h, d; // width, height and depth 

@@ -14,38 +14,29 @@
 
 
 import javax.media.opengl.*;
-import com.jogamp.opengl.util.*;
 import java.util.*;
 
 public class Vivarium
 {
   private Tank tank;
-  private Teapot teapot;
-  private Butterfly butterfly;
-  private Butterfly butterfly2;
-  public static ArrayList<Fish> creaturelist = new ArrayList();
-  
-  
-  public ArrayList<food> foodlist = new ArrayList();
-   
-  private Butterfly current;
-  private Butterfly current2;
-  public static boolean hasfood=false;
+  public static ArrayList<Fish> creaturelist = new ArrayList<Fish>();
 
   private Fish myfish;
   private Fish myfish2;
-  
-  public static bfish mybfish;
+
+  public ArrayOfInterval array = new ArrayOfInterval();
   
   //ball list x, y and z
   interval myInterval = new interval();
   public ArrayOfInterval array = new ArrayOfInterval();
   
-  public static food myfood;
+  // For debug
+  //private int count=0;
   
   public Vivarium()
   {
 	
+<<<<<<< HEAD
 	
 	  //red fish
 	for (int i=0; i< 300 ;i++)
@@ -72,7 +63,79 @@ public class Vivarium
     	intvx.endPoint = mypos+myfish.radius;
     	intvz.id = i;
     	array.ballListZ.add(intvz);
+=======
+	// Qiang - 11.29
+	//red fish
+	for (int i=0; i< 2;i++)
+	{	Random rn = new Random();
+		float mypos = rn.nextFloat()*2 - 2;
+		myfish= new Fish(mypos, mypos, mypos, i);
+	    creaturelist.add(myfish);
+	    
+	    interval intvx = new interval();
+	    intvx.startPoint = mypos-myfish.radius;
+	    intvx.endPoint = mypos+myfish.radius;
+	    intvx.id = i;
+	    array.ballListX.add(intvx);
+	    
+	    interval intvy = new interval();
+	    intvx.startPoint = mypos-myfish.radius;
+	    intvx.endPoint = mypos+myfish.radius;
+	    intvy.id = i;
+	    array.ballListY.add(intvy);
+	    
+	    interval intvz = new interval();
+	    intvx.startPoint = mypos-myfish.radius;
+	    intvx.endPoint = mypos+myfish.radius;
+	    intvz.id = i;
+	    array.ballListZ.add(intvz);
+>>>>>>> 358418682edfa712e8009e965890bc8b929c2329
 	}
+	
+	// For dubug
+	  /*
+	myfish= new Fish(0, 0, 0, 0);
+    creaturelist.add(myfish);
+    
+    interval intvx = new interval();
+    intvx.startPoint = -0.15f;
+    intvx.endPoint = 0.15f;
+    intvx.id = 0;
+    array.ballListX.add(intvx);
+    
+    interval intvy = new interval();
+    intvy.startPoint = -0.15f;
+    intvy.endPoint = 0.15f;
+    intvy.id = 0;
+    array.ballListY.add(intvy);
+    
+    interval intvz = new interval();
+    intvz.startPoint = -0.15f;
+    intvz.endPoint = 0.15f;
+    intvz.id = 0;
+    array.ballListZ.add(intvz);
+    
+    myfish= new Fish(0.5f, 0, 0, 1);
+    creaturelist.add(myfish);
+    
+    intvx = new interval();
+    intvx.startPoint = 0.5f-0.15f;
+    intvx.endPoint = 0.5f+0.15f;
+    intvx.id = 1;
+    array.ballListX.add(intvx);
+    
+    intvy = new interval();
+    intvx.startPoint = 0.5f-0.15f;
+    intvx.endPoint = 0.5f+0.15f;
+    intvx.id = 1;
+    array.ballListY.add(intvy);
+    
+    intvz = new interval();
+    intvx.startPoint = 0.5f-0.15f;
+    intvx.endPoint = 0.5f+0.15f;
+    intvx.id = 1;
+    array.ballListZ.add(intvz);*/
+	// Qiang - 11.29
 	
 	//blue fish
 	
@@ -86,7 +149,7 @@ public class Vivarium
   public void init( GL2 gl )
   {
 	//initialize red fish
-	Iterator it = creaturelist.iterator();
+	Iterator<Fish> it = creaturelist.iterator();
 	while (it.hasNext())
 	{
 		myfish=(Fish) it.next();
@@ -102,15 +165,22 @@ public class Vivarium
 
   public void update( GL2 gl )
   {
-    int size=foodlist.size();
+	  // For debug
+	  //count++;
     
     //update the red fish
+<<<<<<< HEAD
     //old version
+=======
+    
+    // Qiang - 11.29
+>>>>>>> 358418682edfa712e8009e965890bc8b929c2329
     /*
 	Iterator it = creaturelist.iterator();
 	while (it.hasNext())
 	{
 		myfish=(Fish) it.next();
+<<<<<<< HEAD
 		myfish.update(gl);
 		
 	}
@@ -148,35 +218,31 @@ public class Vivarium
 	
 	//if you a food is being added
 	if (PA3.addfood==true)
-	{
-			
-		//create new food and initialize it
-		//hasfood=true
-		myfood= new food(0,-1);
-		myfood.init(gl);
-		myfood.draw(gl);
-		hasfood=true;
-		
-		PA3.addfood=false;
-	}
+=======
+		myfish.update2(gl);
+	}*/
 	
-	if (hasfood==true)
-	{	//if has food=true then check for fish/food collisions (fish eating the food)
-		for (int i =0; i<creaturelist.size(); i++)
+    // O(n^2) Need improve
+	for(int i=0;i<creaturelist.size();i++)
+>>>>>>> 358418682edfa712e8009e965890bc8b929c2329
+	{
+		myfish=creaturelist.get(i);
+		myfish.update(gl);
+		for(int j=0;j<array.ballListX.size();j++)
 		{
-			myfish= (Fish) creaturelist.get(i);
-			if (myfish.myBS.detectO(myfood.bs)==1 && myfish.alive==true)
+			if(array.ballListX.get(j).id==myfish.id)
 			{
-				hasfood=false;
+				float radius = myfish.radius;
+				array.ballListX.get(j).startPoint = myfish.x - radius;
+				array.ballListX.get(j).endPoint = myfish.x + radius;
+				array.ballListY.get(j).startPoint = myfish.y - radius;
+				array.ballListY.get(j).endPoint = myfish.y + radius;
+				array.ballListZ.get(j).startPoint = myfish.z - radius;
+				array.ballListZ.get(j).endPoint = myfish.z + radius;
 			}
 		}
-		//update the food
-		if (hasfood==true)
-		myfood.update(gl);
 	}
-	
-	
-	
+	// Qiang - 11.29
 	
 	//check for collisions between the redfish and blue fish
 	//for (int j=0; j<creaturelist.size(); j++)
@@ -189,6 +255,7 @@ public class Vivarium
   	//check for collisions among redfish
 	//O(n2) - > O(n + m)
 	//closet pair of balls
+	
 	/*
 	for (int i= 0; i<creaturelist.size()-1; i++)
 	{	
@@ -201,12 +268,26 @@ public class Vivarium
 				System.out.println("Collision");
 				myfish.collide();
 				myfish2.collide();
-			}
-			
-		
-		}			
-		
+			}		
+		}
+	}*/
+	
+	//if(count==55)
+	//	count=count;
+	
+	ArrayList<int[]> collisionList = array.checkCollision2();
+	if(collisionList.size()!=0)
+	{
+		for(int i=0; i<collisionList.size(); i++)
+		{
+			myfish= (Fish) creaturelist.get(collisionList.get(i)[0]);
+			myfish2= (Fish) creaturelist.get(collisionList.get(i)[1]);
+			System.out.println("Collision");
+			myfish.collide();
+			myfish2.collide();
+		}
 	}
+<<<<<<< HEAD
 	*/
 	//Using I-Collide algorithm: Time complexity O(n + m). n: number of balls in the program. m: number of pairs of balls that are closest
 	//step 1: sort three list
@@ -226,6 +307,10 @@ public class Vivarium
 	}
 	//init
 	//
+=======
+	// Qiang - 11.29
+
+>>>>>>> 358418682edfa712e8009e965890bc8b929c2329
 	//update the tank
     tank.update( gl );
 
@@ -235,24 +320,13 @@ public class Vivarium
   {
     
     
-	Iterator it = creaturelist.iterator();
+	Iterator<Fish> it = creaturelist.iterator();
 	//draw the redfish
 	while (it.hasNext())
 	{	
-		
 		myfish=(Fish) it.next();
-		if (myfish.alive==true)
 		myfish.draw(gl);
 	}
-	
-	
-	//draw the blue fish
-	//mybfish.draw(gl);
-	
-	
-	//draw the food if it is in the tank
-	if (hasfood==true)
-	myfood.draw(gl);
 
     tank.draw( gl );
    

@@ -7,9 +7,13 @@ public class ArrayOfInterval {
 	  public ArrayList<interval> ballListZ = new ArrayList<interval>();
 	  
 	  public void sortIntervalArray(){
+<<<<<<< HEAD
 		  insertionSort(ballListX);
 		  insertionSort(ballListY);
 		  insertionSort(ballListZ);
+=======
+		  insertionSort();
+>>>>>>> 358418682edfa712e8009e965890bc8b929c2329
 	  }
 
 	  public ArrayList<int[]> checkCollision2(){
@@ -59,7 +63,11 @@ public class ArrayOfInterval {
 		}
 		
 	}
+<<<<<<< HEAD
 	*/
+=======
+	
+>>>>>>> 358418682edfa712e8009e965890bc8b929c2329
 	public ArrayList<int[]> checkOverlap()
 	{	// O(n^2) in worst case
 		ArrayList<int[]> overlapList = new ArrayList<>();
@@ -82,7 +90,11 @@ public class ArrayOfInterval {
 		}
 		return overlapList;
 	}
+<<<<<<< HEAD
 	/*
+=======
+	
+>>>>>>> 358418682edfa712e8009e965890bc8b929c2329
 	public void insertionSort()
 	{	// O(n) in general cases
 		int i, j;
@@ -124,6 +136,7 @@ public class ArrayOfInterval {
 			ballListZ.get(j).endPoint = endPointZ;
 			ballListZ.get(j).id = idZ;
 	    }
+<<<<<<< HEAD
 	}
 	*/
 	/*
@@ -132,6 +145,12 @@ public class ArrayOfInterval {
 	public void insertionSort(ArrayList<interval> myBallList){
 		//sort them using midpoint:
 		
+=======
+		/*for (i = 0; i < ballListX.size(); i++)
+		{
+			System.out.printf("%f\n", (ballListX.get(i).startPoint+ballListX.get(i).endPoint)/2);
+		}*/
+>>>>>>> 358418682edfa712e8009e965890bc8b929c2329
 	}
 }
 

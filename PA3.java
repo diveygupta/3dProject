@@ -26,7 +26,6 @@
 //The blue fish will chase nearby redfish until he catches them at which point the red fish are eaten and die
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.*; 
 
 import com.jogamp.opengl.util.gl2.GLUT;//for new version of gl
@@ -42,8 +41,8 @@ import com.jogamp.opengl.util.*;
 public class PA3 extends JFrame
   implements GLEventListener, KeyListener, MouseListener, MouseMotionListener
 {
-  private final int DEFAULT_WINDOW_WIDTH =1024;
-  private final int DEFAULT_WINDOW_HEIGHT=1024;
+  private final int DEFAULT_WINDOW_WIDTH =512;
+  private final int DEFAULT_WINDOW_HEIGHT=512;
 
   private GLCapabilities capabilities;
   private GLCanvas canvas;
@@ -71,7 +70,7 @@ public class PA3 extends JFrame
     canvas.setAutoSwapBufferMode(true); // true by default. Just to be explicit
     getContentPane().add(canvas);
 
-    animator = new FPSAnimator(canvas, 1); // drive the display loop @ 60 FPS
+    animator = new FPSAnimator(canvas, 60); // drive the display loop @ 60 FPS
 
     glu  = new GLU();
     glut = new GLUT();
@@ -91,6 +90,10 @@ public class PA3 extends JFrame
     viewing_quaternion = new Quaternion();
     
     //init Interval Array
+<<<<<<< HEAD
+=======
+    //initIntervalList();
+>>>>>>> 358418682edfa712e8009e965890bc8b929c2329
   }
 
   public void run()
@@ -265,16 +268,6 @@ public class PA3 extends JFrame
       last_x = mouse.getX();
       last_y = mouse.getY();
       rotate_world = true;
-    }
-    //add food
-    if (button==MouseEvent.BUTTON3)
-    {
-    	int myX= mouse.getX();
-    	int myY= mouse.getY();
-    	addfood=true;
-    	//vivarium.foodlist.add( new food(myX, myY) );
-    	
-    	
     }
   }
 
