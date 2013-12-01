@@ -39,6 +39,7 @@ public class Vivarium
   
   //ball list x, y and z
   interval myInterval = new interval();
+  public ArrayOfInterval array = new ArrayOfInterval();
   
   public static food myfood;
   
@@ -48,29 +49,29 @@ public class Vivarium
 	
 	  //red fish
 	for (int i=0; i< 300 ;i++)
-	{	Random rn = new Random();
-		float mypos = rn.nextFloat()*2 +-1;
-		myfish= new Fish(mypos, mypos, mypos);
-	    creaturelist.add(myfish);
-	    
-	    interval intvx = new interval();
-	    intvx.startPoint = mypos  ;
-	    intvx.endPoint = mypos;
-	    //
-	    
-	    ballListX.add(intvx);
-	    
-	    interval intvy = new interval();
-	    intvy.startPoint = mypos  ;
-	    intvy.endPoint = mypos;
-	    
-	    ballListY.add(intvy);
-	    
-	    interval intvz = new interval();
-	    intvz.startPoint = mypos  ;
-	    intvz.endPoint = mypos;
-	    
-	    ballListZ.add(intvz);
+	{
+		Random rn = new Random();
+		float mypos = rn.nextFloat()*2 - 2;
+		myfish= new Fish(mypos, mypos, mypos, i);
+		creaturelist.add(myfish);
+    
+		interval intvx = new interval();
+		intvx.startPoint = mypos-myfish.radius;
+		intvx.endPoint = mypos+myfish.radius;
+		intvx.id = i;
+    	array.ballListX.add(intvx);
+    
+    	interval intvy = new interval();
+    	intvx.startPoint = mypos-myfish.radius;
+    	intvx.endPoint = mypos+myfish.radius;
+    	intvy.id = i;
+    	array.ballListY.add(intvy);
+    
+    	interval intvz = new interval();
+    	intvx.startPoint = mypos-myfish.radius;
+    	intvx.endPoint = mypos+myfish.radius;
+    	intvz.id = i;
+    	array.ballListZ.add(intvz);
 	}
 	
 	//blue fish
@@ -94,12 +95,7 @@ public class Vivarium
 	
 	//initialize blue fish
 	//mybfish.init(gl);
-	
-	
-	
-	
-	
-	
+
     tank.init( gl );
    // teapot.init( gl );
   }
@@ -109,7 +105,8 @@ public class Vivarium
     int size=foodlist.size();
     
     //update the red fish
-    
+    //old version
+    /*
 	Iterator it = creaturelist.iterator();
 	while (it.hasNext())
 	{
@@ -117,7 +114,34 @@ public class Vivarium
 		myfish.update(gl);
 		
 	}
-	
+	*/
+    //new version of update : 
+    //Qiang's version  O(n^2)
+    /*
+	for(int i=0;i<creaturelist.size();i++)
+	{
+		myfish=creaturelist.get(i);
+		myfish.update(gl);
+		for(int j=0;j<array.ballListX.size();j++)
+		{
+			if(array.ballListX.get(j).id==myfish.id)
+			{
+				float radius = myfish.radius;
+				array.ballListX.get(j).startPoint = myfish.x - radius;
+				array.ballListX.get(j).endPoint = myfish.x + radius;
+				array.ballListY.get(j).startPoint = myfish.y - radius;
+				array.ballListY.get(j).endPoint = myfish.y + radius;
+				array.ballListZ.get(j).startPoint = myfish.z - radius;
+				array.ballListZ.get(j).endPoint = myfish.z + radius;
+			}
+		}
+	}
+	*/
+    /*--------------------linghao's version   : O(n)------------------*/
+	//update X, Y, Z seperately
+    updateBallList(array.ballListX, 'X');
+    updateBallList(array.ballListY, 'Y');
+    updateBallList(array.ballListZ, 'Z');
 	//update the blue fish
 	//mybfish.update(gl);
 		
@@ -184,7 +208,22 @@ public class Vivarium
 		
 	}
 	*/
-	if(myInterval.)
+	//Using I-Collide algorithm: Time complexity O(n + m). n: number of balls in the program. m: number of pairs of balls that are closest
+	//step 1: sort three list
+	//array.sortIntervalArray();
+	
+	ArrayList<int[]> collisionList = array.checkCollision2();
+	if(collisionList.size()!=0)
+	{
+		for(int i=0; i<collisionList.size(); i++)
+		{
+			myfish= (Fish) creaturelist.get(collisionList.get(i)[0]);
+			myfish2= (Fish) creaturelist.get(collisionList.get(i)[1]);
+			System.out.println("Collision");
+			myfish.collide();
+			myfish2.collide();
+		}
+	}
 	//init
 	//
 	//update the tank
@@ -217,5 +256,36 @@ public class Vivarium
 
     tank.draw( gl );
    
+  }
+  
+  public void updateBallList(ArrayList<interval> myList, char axis){
+	  for(int i = 0; i < myList.size(); i++){
+		  int id = myList.get(i).id;
+		  Fish tempFish = creaturelist.get(id);
+		  interval tempInterval = new interval();
+		  tempInterval.id = id;
+		  switch(axis){
+		  	case('X'):{
+		  		tempInterval.startPoint = tempFish.x - tempFish.radius;
+		  		tempInterval.endPoint = tempFish.x + tempFish.radius;
+		  		break;
+		  	}
+		  	case('Y'):{
+		  		tempInterval.startPoint = tempFish.y - tempFish.radius;
+		  		tempInterval.endPoint = tempFish.y + tempFish.radius;
+		  		break;
+		  	}
+		  	case('Z'):{
+		  		tempInterval.startPoint = tempFish.z - tempFish.radius;
+		  		tempInterval.endPoint = tempFish.z + tempFish.radius;
+		  		break;
+		  	}
+		  	default:{
+		  		System.out.println("error in updateBallList in Vivarium.java");
+		  	}
+		  }
+		 //set value
+		 myList.set(i, tempInterval);
+	  }
   }
 }

@@ -26,9 +26,12 @@ public class Fish {
 	public BoundingSphere myBS;
 	public boolean alive;
 	
+	public float radius = 0.15f;
+	public int id;
 	
 	
-	  public Fish(float xx, float yy, float zz )
+	
+	  public Fish(float xx, float yy, float zz, int newId)
 	  {	//position
 	    x=xx;
 	    y=yy;
@@ -50,6 +53,7 @@ public class Fish {
 	    rot_speed=5;
 	    rot_dir=1;
 	    
+	    id = newId;
 	  }
 	  
 	  public void init( GL2 gl )
@@ -348,3 +352,4 @@ public class Fish {
 	  
 	  
 }
+

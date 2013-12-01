@@ -91,7 +91,6 @@ public class PA3 extends JFrame
     viewing_quaternion = new Quaternion();
     
     //init Interval Array
-    initIntervalList();
   }
 
   public void run()
