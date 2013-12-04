@@ -89,6 +89,8 @@ public class PA3 extends JFrame
     // correctly initialized.
     vivarium = new Vivarium(  );
     viewing_quaternion = new Quaternion();
+    
+    //init Interval Array
   }
 
   public void run()
@@ -98,6 +100,7 @@ public class PA3 extends JFrame
 
   public static void main( String[] args )
   {
+	  //create the balls
     PA3 P = new PA3();
     P.run();
   }

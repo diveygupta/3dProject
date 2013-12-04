@@ -4,14 +4,15 @@ import javax.media.opengl.glu.*;
 
 import java.util.*;
 import java.io.IOException;
-
+//Creates a new fish object (small red fish). These fish are capable of bumping into each other and choosing a new direction,
+//They will also move towards food when the food is dropped into the tank
 public class bfish {
 	
 	public float x, y,z;
 	private GLU glu = new GLU();
-	private int fish_obj, body, tail;
+	private int fish_obj, body, tail, colorchange;
 	  
-	private float dir_x, dir_y, dir_z;
+	public float dir_x, dir_y, dir_z;
 	private float speed;
 	  
 	private float angle;
@@ -23,17 +24,22 @@ public class bfish {
 	
 	private float reallign;
 	public BoundingSphere myBS;
+	public boolean alive;
+	
+	public float radius = 0.15f;
+	public int id;
 	
 	
 	
-	  public bfish(float xx, float yy, float zz )
-	  {
+	  public bfish(float xx, float yy, float zz, int newId)
+	  {	//position
 	    x=xx;
 	    y=yy;
 	    z=zz;
 	    
 	    
 	    fish_obj=body=tail=0;
+	    Random rn = new Random();
 	    
 	    dir_x=1;
 	    dir_y=0;
@@ -41,20 +47,23 @@ public class bfish {
 	    speed=.01f;
 	    nextmove=1;
 	    
+	    
+	    alive=true;
 	    angle=0;
 	    rot_speed=5;
 	    rot_dir=1;
 	    
+	    id = newId;
 	  }
 	  
 	  public void init( GL2 gl )
 	  {
 	  
-	    //bounding sphere for collisions with other fish
-	    myBS = new BoundingSphere(x,y,z, .4f);
+	    //Creates the bounding sphere which collisions are based off of
+	    myBS = new BoundingSphere(x,y,z, .15f);
 	    
 	    create_body(gl);
-	    create_tail(gl);
+	    //create_tail(gl);
 	    
 	    fish_obj = gl.glGenLists(1);
 
@@ -68,31 +77,49 @@ public class bfish {
 	  
 	  public void update( GL2 gl )
 	  {	
-		  //only collide if cancollide is true
-		if (prevcollide==0)
-			cancollide=true;
-		else
-			prevcollide--;
-		//choose new random movement at start of program
-		if (nextmove==1)
-		{
-			choosemovement();
-			nextmove--;
-		}
-		else
-		findfood();  //look for red fish to eat
+		if (alive==true)
+		  {	//only collide with other fish if this flag is true
+			//if (prevcollide==0)
+			//	cancollide=true;
+			//else
+			//	prevcollide--;
 		
-
+			if (nextmove==1)
+			{	//if first move choose random movement
+				choosemovement();
+				nextmove--;
+			}
 		
-	  	//move fish
-		translate();
-		//flap tail back and forth
-		flap_tail();
+		//Always be aware of the predator!!!
+			//float xx= Vivarium.mybfish.x;
+			//float yy= Vivarium.mybfish.y;
+			//float zz= Vivarium.mybfish.z;
+			//Get the distance of preadator
+			//float distance = (float)Math.sqrt( Math.pow( (double)this.x-xx, 2) +  Math.pow( (double)this.y-yy, 2) +  Math.pow( (double)this.z-zz, 2) );
+			
+			//if the red fish is sufficiently far from a wall (to avoid getting stuck)
+			//if (Math.abs(x)<1.8 && Math.abs(y)<1.8 && Math.abs(z)<1.8)
+			//{	//if the predator is close then evade
+				//if (distance<1f)
+					//evade();
+				//Otherwise look for food
+			//	 if (Vivarium.hasfood==true)
+				//{
+					//findfood();  
+				//}
+			//}
 		
-	    gl.glNewList( fish_obj, GL2.GL_COMPILE );
-	    construct_disp_list( gl ); 
-	    gl.glEndList();
+	  	
+			translate();
+			//flap_tail();
+		
+			gl.glNewList( fish_obj, GL2.GL_COMPILE );
+			construct_disp_list( gl ); 
+			gl.glEndList();
+		  	}
 	  }
+	  
+
 	  
 	  public void draw( GL2 gl )
 	  {
@@ -107,25 +134,24 @@ public class bfish {
 		  	gl.glTranslatef(x, y, z);
 		  
 		    gl.glPushMatrix();
-		    allignfish();
-		    //orient the fish in the proper direction
-		    gl.glRotatef(180+reallign, 0, 1, 0);
+		    //allignfish();
+		    //gl.glRotatef(180+reallign, 0, 1, 0);
 		    gl.glCallList(body);
 		    gl.glPopMatrix();
 		    
-		    gl.glPushMatrix();
-		    allignfish();
-		    //orient the fish in the proper direction
-		    gl.glRotatef(180+reallign, 0, 1, 0);
-		    gl.glRotatef(angle, 0, 1, 0);
-		    gl.glCallList(tail);
+		  //  gl.glPushMatrix();
+		   /// allignfish();
+		   // gl.glRotatef(180+reallign, 0, 1, 0);
+		    //gl.glRotatef(angle, 0, 1, 0);
+		   // gl.glCallList(tail);
 		   
-		    gl.glPopMatrix();
+		   // gl.glPopMatrix();
 		
 	    
 	  }
 	  private void translate()
 	  {
+		  //move the fish
 		  if (x>2)
 			  dir_x=-1;
 		  
@@ -153,14 +179,14 @@ public class bfish {
 	  }
 	  private void allignfish()
 	  {
-		  //allign the fish in the direction he is facing 
+		  //allign the fish in the direction he is facing
+		  
 		  double mag = Math.sqrt(Math.pow(dir_x, 2)+Math.pow(dir_z,2));
 	  
 		  if(dir_x == 0)	 
 			  reallign = 0; 
-		  
+		  //tan =oppositie/adjacent
 		  else if(dir_x>0)
-		  //tan = opp/adj
 			  reallign = (float)Math.toDegrees(Math.atan( (dir_z/dir_x)/mag ));
 		  else
 		  {
@@ -169,10 +195,10 @@ public class bfish {
 	  
 		  reallign*= -1;
 	 
-	  	}
+	  }
 	  private void flap_tail()
-	  {	
-		
+	  {
+		//quickly swish the backtail back and forth
 		 if (angle>10)
 			 rot_dir=-1;
 		 if (angle<-10)
@@ -182,38 +208,30 @@ public class bfish {
 		 angle+= rot_dir*rot_speed;
 	  }
 	  
-	  public void findfood()
-	  {
-		  //move toward the red fish
-		  
-		  for (int i =0; i <Vivarium.creaturelist.size(); i++)
-		  {
-			  if (Vivarium.creaturelist.get(i).alive==true)
-			  {
-		
-				  float xx= Vivarium.creaturelist.get(i).x;
-				  float yy= Vivarium.creaturelist.get(i).y;
-				  float zz= Vivarium.creaturelist.get(i).z;
-		  
-				  float distance = (float)Math.sqrt( Math.pow( (double)this.x-xx, 2) +  Math.pow( (double)this.y-yy, 2) +  Math.pow( (double)this.z-zz, 2) );
-				  //if the fish is close choose new direction
-				  if (distance<4f)
-				  {
-					  dir_x= xx-this.x;
-					  dir_y= yy-this.y;
-					  dir_z= zz-this.z;
-					  return;
-				  }
-			  }
-		  }
-	  }
+
 	  
-	  
-	  public void collide()
-	  {	
-	
+	  //handles collision with other red fish
+	  public void collide(Vec vf)
+	  {	//only coollide if both fish are alive
+		  //if (cancollide && alive)
+	//  {
+		  //if (prevcollide>2)
+		  //{	//if you have just collided then pick a random direction and move that way without changing direction
+			//  choosemovement();
+			  //cancollide=false;
+			 // prevcollide=6;
+		  //}
+		 
+		 // else if (prevcollide==0)
+		  //{		
+			
+			  dir_x=vf.x;
+			  dir_y=vf.y;
+			  dir_z=vf.z;
+		 // }
+		  //prevcollide+=2;
 		  
-	  
+	  //}
 		  
 	  }
 	  
@@ -225,15 +243,16 @@ public class bfish {
 		
 		  //Choose a new random movement
 		  Random rn = new Random();
-		  dir_x=rn.nextFloat();
-		  dir_y=rn.nextFloat();
-		  dir_z=rn.nextFloat();
+		  //random direction between -1 and 1
+		  dir_x=rn.nextFloat() * 2 + -1 ;
+		  dir_y=rn.nextFloat() * 2 + -1;
+		  dir_z=rn.nextFloat() * 2 +-1;
   
 		  
 	  }
 	  
 	  private void create_body( GL2 gl)
-	  {	//generate a sphere for the body and then scale it to look like a fish
+	  {	//generate a sphere and scale it to make it look like a fish body
 	    body = gl.glGenLists(1);
 	    
 	    gl.glNewList( body, GL2.GL_COMPILE);
@@ -246,18 +265,20 @@ public class bfish {
 	    glu.gluQuadricDrawStyle( myquad, GLU.GLU_FILL );
 	    glu.gluQuadricNormals( myquad, GLU.GLU_SMOOTH );
 
-	    gl.glColor3f( 0f, 0f, 1f );
-	    gl.glScalef(1.2f,1f,0.4f);
-	    glu.gluSphere(myquad,.2f,20,20);
+	    gl.glColor3f( 0f, 1f, 0f );
+	    glu.gluSphere(myquad,.15f,20,20);
 	   
 	    
 	    gl.glPopMatrix();
 	    gl.glEndList();
 	    
 	  }
+	  
+	  
+
 
 	  private void create_tail( GL2 gl)
-	  {	//generate a sphere for the tail and scale it to like like a fish tail
+	  {	//generate a sphere for the tail and scale it to make it look realistic
 	    tail = gl.glGenLists(1);
 	    
 	    gl.glNewList( tail, GL2.GL_COMPILE);
@@ -270,11 +291,11 @@ public class bfish {
 	    glu.gluQuadricDrawStyle( myquad, GLU.GLU_FILL );
 	    glu.gluQuadricNormals( myquad, GLU.GLU_SMOOTH );
 
-	    gl.glColor3f( 0f, 0f, 1f );
+	    gl.glColor3f( 1f, 0f, 0f );
 	    gl.glScalef(.2f,1f,0.4f);
 	    
 	    
-	    glu.gluSphere(myquad,.2f,20,20);
+	    glu.gluSphere(myquad,.15f,20,20);
 	    
 	    
 	    gl.glPopMatrix();
@@ -284,3 +305,4 @@ public class bfish {
 	  
 	  
 }
+

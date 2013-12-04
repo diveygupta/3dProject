@@ -11,9 +11,10 @@ public class BoundingSphere
 		r=radius;
 		
 	}
-
+	//O(1)
 	public int detectO(BoundingSphere BS)
 	{
+		//distance = sqrt (x2 + y2 + z2);
 		float distance = (float)Math.sqrt( Math.pow( (double)this.xpos-BS.xpos, 2) +  Math.pow( (double)this.ypos-BS.ypos, 2) +  Math.pow( (double)this.zpos-BS.zpos, 2) );
 		if (distance > this.r + BS.r)
 			return 0;
