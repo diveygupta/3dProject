@@ -10,11 +10,11 @@ public class Fish {
 	
 	public float x, y,z;
 	private GLU glu = new GLU();
-	private int fish_obj, body, tail;
+	private int fish_obj, body, tail, colorchange;
 	  
 	public float dir_x, dir_y, dir_z;
 	private float speed;
-	  
+	public float r, g, b;  
 	private float angle;
 	private float rot_dir;
 	private float rot_speed;
@@ -54,6 +54,12 @@ public class Fish {
 	    rot_dir=1;
 	    
 	    id = newId;
+	   
+	   
+	    r = rn.nextFloat();
+	    g = rn.nextFloat();
+	    b = rn.nextFloat();
+	    
 	  }
 	  
 	  public void init( GL2 gl )
@@ -86,7 +92,7 @@ public class Fish {
 		
 			if (nextmove==1)
 			{	//if first move choose random movement
-				//choosemovement();
+				choosemovement();
 				nextmove--;
 			}
 		
@@ -315,7 +321,11 @@ public class Fish {
 	    glu.gluQuadricDrawStyle( myquad, GLU.GLU_FILL );
 	    glu.gluQuadricNormals( myquad, GLU.GLU_SMOOTH );
 
-	    gl.glColor3f( 1f, 0f, 0f );
+	
+	    
+	    gl.glColor3f( r, g, b );
+	    
+	  
 	    glu.gluSphere(myquad,.15f,20,20);
 	   
 	    
@@ -323,6 +333,10 @@ public class Fish {
 	    gl.glEndList();
 	    
 	  }
+	  
+	
+	  
+
 
 	  private void create_tail( GL2 gl)
 	  {	//generate a sphere for the tail and scale it to make it look realistic

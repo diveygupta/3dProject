@@ -76,7 +76,7 @@ public class PA3 extends JFrame
     glu  = new GLU();
     glut = new GLUT();
 
-    setTitle("CS480/CS680 : Spinning Teapot");
+    setTitle("CS580 : Collision Detection");
     setSize( DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setVisible(true);
