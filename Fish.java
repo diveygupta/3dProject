@@ -12,7 +12,7 @@ public class Fish {
 	private GLU glu = new GLU();
 	private int fish_obj, body, tail;
 	  
-	private float dir_x, dir_y, dir_z;
+	public float dir_x, dir_y, dir_z;
 	private float speed;
 	  
 	private float angle;
@@ -82,7 +82,7 @@ public class Fish {
 		
 			if (nextmove==1)
 			{	//if first move choose random movement
-				choosemovement();
+				//choosemovement();
 				nextmove--;
 			}
 		
@@ -257,27 +257,27 @@ public class Fish {
 	  }
 	  
 	  //handles collision with other red fish
-	  public void collide()
+	  public void collide(Vec vf)
 	  {	//only coollide if both fish are alive
-		  if (cancollide && alive)
-	  {
-		  if (prevcollide>2)
-		  {	//if you have just collided then pick a random direction and move that way without changing direction
-			  choosemovement();
-			  cancollide=false;
-			  prevcollide=6;
-		  }
+		  //if (cancollide && alive)
+	//  {
+		  //if (prevcollide>2)
+		  //{	//if you have just collided then pick a random direction and move that way without changing direction
+			//  choosemovement();
+			  //cancollide=false;
+			 // prevcollide=6;
+		  //}
 		 
-		  else if (prevcollide==0)
-		  {		//otherwise choose a random x and flip the y and z directions
-			  Random rn = new Random();
-			  dir_x=rn.nextFloat();
-			  dir_y=-dir_y;
-			  dir_z=-dir_z;
-		  }
-		  prevcollide+=2;
+		 // else if (prevcollide==0)
+		  //{		
+			
+			  dir_x=vf.x;
+			  dir_y=vf.y;
+			  dir_z=vf.z;
+		 // }
+		  //prevcollide+=2;
 		  
-	  }
+	  //}
 		  
 	  }
 	  

@@ -39,16 +39,23 @@ public class Vivarium
   
   
   public static food myfood;
-  
+  public float dprod (Vec v1, Vec v2)
+  {
+	  float result = v1.x *v2.x + v1.y*v2.y + v1.z* v2.z;
+	  return result;
+	  
+	  
+  }
   public Vivarium()
   {
 	
 	
 	  //red fish
-	for (int i=0; i< 300 ;i++)
+	for (int i=0; i< 10 ;i++)
 	{	Random rn = new Random();
 		float mypos = rn.nextFloat()*2 +-1;
 		myfish= new Fish(mypos, mypos, mypos);
+		//myfish = new Fish(i, 0, 0);
 	    creaturelist.add(myfish);
 		
 	}
@@ -144,6 +151,20 @@ public class Vivarium
 	//}	
 	
   	//check for collisions among redfish
+	Vec cp= new Vec();
+	Vec cp2 = new Vec();
+	//intial velocity vectors
+	Vec V1 = new Vec();
+	Vec V2 = new Vec();
+	//normal and tangent vectors
+	Vec Vn1 = new Vec();
+	Vec Vn2 = new Vec();
+	Vec Vt1 = new Vec();
+	Vec Vt2 = new Vec();
+	//final velocity vectors
+	Vec V1f = new Vec();
+	Vec V2f = new Vec();
+	
 	for (int i= 0; i<creaturelist.size()-1; i++)
 	{	
 		for (int j=i+1; j<creaturelist.size(); j++)
@@ -152,9 +173,41 @@ public class Vivarium
 			myfish2= (Fish) creaturelist.get(j);
 			if (myfish.myBS.detectO(myfish2.myBS)==1)
 			{//Collision!
+				//calculate collision plane
+				cp.x = myfish.x-myfish2.x;
+				cp.y = myfish.y-myfish2.y;
+				cp.z = myfish.z-myfish2.z;
+				cp.norm();
+				cp2.x = -cp.x;
+				cp2.y = -cp.y;
+				cp2.z = -cp.z;
+				
+				//Normal vector 1
+				V1.x = myfish.dir_x;
+				V1.y = myfish.dir_y;
+				V1.z = myfish.dir_z;
+				float temp = dprod(V1, cp2);
+				Vn1 = cp2.mult(temp);
+						
+				//Normal vector 2
+				V2.x = myfish2.dir_x;
+				V2.y = myfish2.dir_y;
+				V2.z = myfish2.dir_z;
+				temp = dprod(V2, cp);
+				Vn2 = cp.mult(temp);
+				
+				//tangent vector 1
+				Vt1 = Vn1.sub(V1);
+				
+				//tangent vector 2
+				Vt2 = Vn2.sub(V2);
+				
+				V1f = Vt1.add(Vn2);
+				V2f = Vt2.add(Vn1);
+				
 				System.out.println("Collision");
-				myfish.collide();
-				myfish2.collide();
+				myfish.collide(V1f);
+				myfish2.collide(V2f);
 			}
 			
 		
