@@ -20,7 +20,7 @@ import java.util.*;
 public class Vivarium
 {
 
-  public static boolean algorithm = true;	
+  public static boolean algorithm = false;	
 	
   private Tank tank;
   private Teapot teapot;
@@ -54,17 +54,18 @@ public class Vivarium
   }
   public Vivarium()
   {
-	  int num = 1000;
+	  int num = 30;
 	/*
 	 array.startPointsX = new float[num];
 	 array.startPointsY = new float[num];
 	 array.startPointsZ = new float[num];
 	 */
 	  //red fish
+	 Random rn = new Random(System.currentTimeMillis());
 	 for (int i=0; i< num ;i++)
 	 {
-		Random rn = new Random();
-		float mypos = rn.nextFloat()*2 - 2;
+		
+		float mypos = rn.nextFloat()*4 - 2;
 	
 		myfish= new Fish(mypos, mypos, mypos, i);
 		creaturelist.add(myfish);

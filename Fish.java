@@ -44,7 +44,7 @@ public class Fish {
 	    dir_x=1;
 	    dir_y=0;
 	    dir_z=0;
-	    speed=.03f;
+	    speed=.022f;
 	    nextmove=1;
 	    
 	    
